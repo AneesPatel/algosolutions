@@ -1,8 +1,9 @@
 class Solution(object):
     def containsDuplicate(self, nums):
-        hashset = set()
+        nums2 = set()
         for x in nums:
-            if x in hashset:
+            if x in nums2:
                 return True
-            hashset.add(x)
+            else:
+                nums2.add(x)
         return False
