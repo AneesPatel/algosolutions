@@ -1,12 +1,14 @@
 class Solution(object):
     def groupAnagrams(self, strs):
+        if len(strs) == 0:
+            return [[""]]
         groupings = {}
-        for str in strs:
-            key = "".join(sorted(str))
-            if key in groupings:
-                groupings.get(key).append( str )
+        for x in strs:
+            newx = ''.join(sorted(x))
+            if newx in groupings:
+                groupings[newx].append(x)
             else:
-                groupings[key] = [str]
-        print(groupings.values())
-        return(groupings.values())
-        
+                groupings[newx] = [x]
+                
+        return groupings.values()
+
