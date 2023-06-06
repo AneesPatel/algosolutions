@@ -1,11 +1,16 @@
 class Solution(object):
     def twoSum(self, numbers, target):
-        p1, p2 = 0, len(numbers) - 1
+        p1 = 0
+        p2 = len(numbers) - 1
+        print(numbers[p1], numbers[p2])
         while p1 < p2:
-            csum = numbers[p1] + numbers[p2]
-            if csum > target:
+            tsum = numbers[p1] + numbers[p2]
+            if tsum > target:
                 p2 -= 1
-            elif csum < target:
+            elif tsum < target:
                 p1 += 1
             else:
                 return [p1 + 1, p2 + 1]
+
+            
+        
