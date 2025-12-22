@@ -1,8 +1,3 @@
-class Solution(object):
-    def containsDuplicate(self, nums):
-        numsset = set()
-        for x in nums:
-            if x in numsset:
-                return True
-            numsset.add(x)
-        return False
+class Solution:
+    def containsDuplicate(self, nums: List[int]) -> bool:
+        return len(nums) != len(set(nums))
