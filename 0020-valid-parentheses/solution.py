@@ -1,13 +1,13 @@
-class Solution(object):
-    def isValid(self, s):
-        paren = {"]": "[", ")": "(", "}": "{"}
+class Solution:
+    def isValid(self, s: str) -> bool:
         stack = []
+        mapping = {")": "(", "}": "{", "]": "["}
+        
         for x in s:
-            if x not in paren:
+            if x in mapping:
+                top = stack.pop() if stack else '#'
+                if mapping[x] != top:
+                    return False
+            else:
                 stack.append(x)
-                continue
-            if not stack or stack[-1] != paren[x]:
-                return False
-            stack.pop()
-
         return not stack
