@@ -1,23 +1,4 @@
-class Solution(object):
-    def isPalindrome(self, s):
-        start, end = 0, len(s) - 1
-        while start < end:
-            while start < end and not self.alphanum(s[start]):
-                start += 1
-            while start < end and not self.alphanum(s[end]):
-                end -= 1
-            if s[start].lower() != s[end].lower():
-                return False
-            start += 1
-            end -= 1
-        return True
-        
-    def alphanum(self, c):
-        return (
-            ord("A") <= ord(c) <= ord("Z")
-            or ord("a") <= ord(c) <= ord("z")
-            or ord("0") <= ord(c) <= ord("9")
-        )
-            
-
- 
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        s = [c.lower() for c in s if c.isalnum()]
+        return all (s[i] == s[~i] for i in range(len(s)//2))
