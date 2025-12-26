@@ -1,13 +1,13 @@
-class Solution(object):
-    def maxArea(self, height):
-        p1, p2 = 0, len(height) - 1
-        omax = 0
-        while p1 < p2:
-            cmax = min(height[p1], height[p2]) * (p2 - p1)
-            if cmax > omax:
-                omax = cmax
-            if height[p1] > height[p2]:
-                p2 -= 1
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
+        maxheight = 0
+        l = 0
+        r = len(height) - 1
+        while l < r:
+            currheight = min(height[l], height[r]) * (r - l)
+            maxheight = max(currheight, maxheight)
+            if height[l] > height[r]:
+                r -= 1
             else:
-                p1 += 1
-        return omax
+                l += 1
+        return maxheight
