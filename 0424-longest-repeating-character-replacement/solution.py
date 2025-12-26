@@ -1,13 +1,14 @@
-class Solution(object):
-    def characterReplacement(self, s, k):
-        count = {}
-        p1 = 0
+class Solution:
+    def characterReplacement(self, s: str, k: int) -> int:
+        l = 0
         res = 0
-        for p2 in range(len(s)):
-            count[s[p2]] = 1 + count.get(s[p2], 0)
-            while (p2 - p1 + 1) - max(count.values()) > k:
-                count[s[p1]] -= 1
-                p1 += 1
-
-            res = max(res, p2 - p1 + 1)
+        count = {}
+        maxf = 0
+        for r in range(len(s)):
+            count[s[r]] = 1 + count.get(s[r], 0)
+            maxf = max(maxf, count[s[r]])
+            if (r - l + 1) - maxf > k:
+                count[s[l]] -= 1
+                l += 1
+            res = max(r - l + 1, res)
         return res
