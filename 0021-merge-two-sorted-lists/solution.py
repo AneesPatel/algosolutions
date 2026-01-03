@@ -15,10 +15,10 @@ class Solution:
                 curr.next = list1
                 list1 = list1.next
             curr = curr.next
+        
         if list1:
             curr.next = list1
         elif list2:
             curr.next = list2
         
         return head.next
-
