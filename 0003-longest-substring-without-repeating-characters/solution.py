@@ -7,7 +7,6 @@ class Solution:
             while s[r] in count:
                 count.remove(s[l])
                 l += 1
-            
             count.append(s[r])
             res = max(res, r - l + 1)
         return res
