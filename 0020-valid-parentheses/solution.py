@@ -1,7 +1,7 @@
 class Solution:
     def isValid(self, s: str) -> bool:
         stack = []
-        para = {'(':')','{':'}','[':']'}
+        para = {"{":"}", "[":"]", "(":")"}
         for x in s:
             if x in para:
                 stack.append(x)
@@ -11,4 +11,7 @@ class Solution:
                 temp = stack.pop()
                 if para[temp] != x:
                     return False
-        return len(stack) == 0
+        if not stack:
+            return True
+        else:
+            return False
