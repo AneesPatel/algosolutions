@@ -1,14 +1,11 @@
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
-        counts = {}
+        count = {}
         for x in strs:
-            sort = "".join(sorted(x))
-            if sort in counts:
-                counts[sort].append(x)
+            sortedx = "".join(sorted(x))
+            if sortedx in count:
+                count[sortedx].append(x)
             else:
-                counts[sort] = [x]
+                count[sortedx] = [x]
         
-        return list(counts.values())
-
-            
-
+        return list(count.values())
