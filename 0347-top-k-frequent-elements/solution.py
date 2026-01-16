@@ -1,12 +1,13 @@
 class Solution:
+    from collections import heapq
     def topKFrequent(self, nums: List[int], k: int) -> List[int]:
         count = Counter(nums)
-        heap = []
         res = []
+        heap = []
         for x in count:
-            heap.append((count[x] * -1, (x)))
-        heapq.heapify(heap)
+            heapq.heappush(heap, (count[x] * -1, x))
         while len(res) < k:
-            val = heapq.heappop(heap)
-            res.append(val[1])
+            cur = heapq.heappop(heap)
+            res.append(cur[1])
         return res
+
