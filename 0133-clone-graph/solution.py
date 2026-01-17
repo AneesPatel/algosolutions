@@ -7,31 +7,18 @@ class Node:
 """
 
 from typing import Optional
-
 class Solution:
-    def __init__(self):
-        # Initialize the map here so it is accessible across recursive calls
-        self.visited = {}
-
     def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
+        olddict = {}
+        def dfs(node):
+            if node in olddict:
+                return olddict[node]
+            clone = Node(node.val)
+            olddict[node] = clone
+            for cur in node.neighbors:
+                clone.neighbors.append(dfs(cur))
+            return clone
         if not node:
             return None
-            
-        # 1. Check if the node is already in our visited map
-        if node in self.visited:
-            return self.visited[node]
-        
-        # 2. Create the new node
-        # We instantiate the class directly rather than using a 'createNode' function
-        new_node = Node(node.val, [])
-        
-        # 3. Add to map immediately to handle cycles
-        self.visited[node] = new_node
-        
-        # 4. Recursively clone neighbors
-        if node.neighbors:
-            for neighbor in node.neighbors:
-                # Python lists use .append(), not .add()
-                new_node.neighbors.append(self.cloneGraph(neighbor))
-                
-        return new_node
+        return dfs(node)
+         
