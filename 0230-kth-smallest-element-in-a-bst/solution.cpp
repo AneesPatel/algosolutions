@@ -11,16 +11,24 @@
  */
 class Solution {
 public:
-    vector<int> nums = {};
-    void dfs(TreeNode* node){
-        if (not node) return;
-        nums.push_back(node->val);
-        dfs(node->left);
-        dfs(node->right);
-    }
     int kthSmallest(TreeNode* root, int k) {
-        dfs(root);
-        sort(nums.begin(), nums.end());
-        return (nums[k - 1]);
+        stack<TreeNode*> stack = {};
+        int count = 0;
+        TreeNode* cur = root;
+        while(cur or !stack.empty()){
+            while (cur){
+                stack.push(cur);
+                cur = cur->left; 
+            }
+            cur = stack.top();
+            stack.pop();
+
+            count++;
+            if(count == k){
+                return cur->val;
+            }
+            cur = cur->right;
+        }
+        return -1;
     }
 };
