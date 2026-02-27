@@ -1,10 +1,9 @@
 class Solution:
     def twoSum(self, nums: List[int], target: int) -> List[int]:
-        count = {}
-        res = []
-        for ind, val in enumerate(nums):
-            if target - val in count:
-                return [ind, count[target-val]]
-            else:
-                count[val] = ind
-        return -1
+        for i in range(len(nums)):
+            curval = nums[i]
+            for j in range(i + 1, len(nums)):
+                curval2 = nums[j]
+                if(curval + curval2 == target):
+                    return ([i, j])
+        
