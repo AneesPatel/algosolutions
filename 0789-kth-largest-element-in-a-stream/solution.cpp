@@ -1,11 +1,11 @@
 class KthLargest {
 private:
-    priority_queue<int, std::vector<int>, std::greater<int>> minq;
-    int k_size;
+    priority_queue<int, vector<int>, greater<int>> minq;
+    int maxk;
 public:
     KthLargest(int k, vector<int>& nums) {
-        k_size = k;
-        for (auto cur:nums){
+        maxk = k;
+        for (auto cur : nums){
             minq.push(cur);
         }
         while(minq.size() > k){
@@ -15,7 +15,7 @@ public:
     
     int add(int val) {
         minq.push(val);
-        if(minq.size() > k_size){
+        if(minq.size() > maxk){
             minq.pop();
         }
         return minq.top();
