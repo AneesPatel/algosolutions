@@ -1,39 +1,35 @@
 class Solution {
 public:
+    int maxarea;
     int ROWS;
     int COLS;
-    int maxcount;
-    void dfs(int r, int c, int& curcount, vector<vector<int>>& grid){
+    void dfs(int r, int c, int& count, vector<vector<int>>& grid){
         if(r < 0 or c < 0 or r >= ROWS or c >= COLS or grid[r][c] == 0){
             return;
         }
-        curcount += 1;
+        count += 1;
         grid[r][c] = 0;
-        if(curcount > maxcount){
-            maxcount = curcount;
+        if(count > maxarea){
+            maxarea = count;
         }
-        dfs(r + 1, c, curcount, grid);
-        dfs(r - 1, c, curcount, grid);
-        dfs(r, c + 1, curcount, grid);
-        dfs(r, c - 1, curcount, grid);
-        
-
-        return;
+        dfs(r + 1, c, count, grid);
+        dfs(r, c + 1, count, grid);
+        dfs(r, c - 1, count, grid);
+        dfs(r - 1, c, count, grid);
     }
     int maxAreaOfIsland(vector<vector<int>>& grid) {
-        maxcount = 0;
         ROWS = grid.size();
         COLS = grid[0].size();
-        int curcount = 0;
+        int count;
+        maxarea = 0;
         for(int r = 0; r < ROWS; ++r){
             for(int c = 0; c < COLS; ++c){
                 if(grid[r][c] == 1){
-                    curcount = 0;
-                    dfs(r, c, curcount, grid);
+                    count = 0;
+                    dfs(r, c, count, grid);
                 }
-                
             }
         }
-        return maxcount;
+        return maxarea;
     }
 };
