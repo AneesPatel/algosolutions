@@ -22,7 +22,7 @@ public:
 class Solution {
 public:
     Node* dfs(Node* node, unordered_map<Node*, Node*>& oldToNew){
-        if (node == nullptr){
+        if(node == nullptr){
             return nullptr;
         }
         if(oldToNew.count(node)){
@@ -30,10 +30,12 @@ public:
         }
         Node* newNode = new Node(node->val);
         oldToNew[node] = newNode;
-        for(auto nei: node->neighbors){
+        for(auto nei : node->neighbors){
             newNode->neighbors.push_back(dfs(nei, oldToNew));
         }
         return newNode;
+
+
     }
     Node* cloneGraph(Node* node) {
         unordered_map<Node*, Node*> oldToNew;
