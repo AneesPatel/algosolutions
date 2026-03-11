@@ -30,15 +30,15 @@ public:
         }
         Node* newNode = new Node(node->val);
         oldToNew[node] = newNode;
-        for(auto nei : node->neighbors){
-            newNode->neighbors.push_back(dfs(nei, oldToNew));
+        for(auto nga : node->neighbors){
+            newNode->neighbors.push_back(dfs(nga, oldToNew));
         }
+
         return newNode;
-
-
     }
+
     Node* cloneGraph(Node* node) {
         unordered_map<Node*, Node*> oldToNew;
-        return dfs(node, oldToNew);
+        return dfs(node, oldToNew);    
     }
 };
