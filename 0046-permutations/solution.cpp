@@ -1,27 +1,25 @@
 class Solution {
 public:
-    void backtrack(auto& path, auto& prevs, auto& res, const auto& nums){
-        if(nums.size() == path.size()){
+    void backtrack(int index, vector<int>& path, vector<vector<int>>& res, vector<int>& nums, unordered_set<int>& visited){
+        if(path.size() == nums.size()){
             res.push_back(path);
+            return;
         }
-        
         for(int i = 0; i < nums.size(); ++i){
-            if(prevs.count(i)){
-                continue;
-            }
+            if (visited.count(nums[i])) continue;
             path.push_back(nums[i]);
-            prevs.insert(i);
-            backtrack(path, prevs, res, nums);
+            visited.insert(nums[i]);
+            backtrack(i + 1, path, res, nums, visited);
+            visited.erase(nums[i]);
             path.pop_back();
-            prevs.erase(i);
-        }
 
+        } 
     }
     vector<vector<int>> permute(vector<int>& nums) {
-        unordered_set<int> prevs;
         vector<vector<int>> res;
         vector<int> path;
-        backtrack(path, prevs, res, nums);
+        unordered_set<int> visited;
+        backtrack(0, path, res, nums, visited);
         return res;
     }
 };
