@@ -6,16 +6,19 @@ public:
         if(total % 2 == 1){
             return false;
         }
-        int target = total/2;
-        vector<bool> dp(target + 1, false);
+        int need = total / 2;
+        vector<bool> dp(need + 1, 0);
+        //dp of i in total to whether or not it can be formed;
         dp[0] = true;
+        // so lets iterate backwards
         for(auto cur : nums){
-            for(int i = target; i >= cur; --i){
-                dp[i] = dp[i] or dp[i - cur];
+            for(int i = need; i >= cur; --i){
+                
+                dp[i] = dp[i] or dp[i-cur];
+                
+                
             }
         }
-        return dp[target];
-
-        
+        return dp[need];
     }
 };
