@@ -1,22 +1,17 @@
 class Solution {
 public:
-    int dfs(int i, int j, string& text1, string& text2, vector<vector<int>>& memo){
-        if(i >= text1.size() or j >= text2.size()){
-            return 0;
-        }
-        if(memo[i][j] != -1){
-            return memo[i][j];
-        }
-        if(text1[i] == text2[j]){
-            memo[i][j] = dfs(i + 1, j + 1, text1, text2, memo) + 1;
-        }
-        else{
-            memo[i][j] = max(dfs(i + 1, j, text1, text2, memo), dfs(i, j + 1, text1, text2, memo));
-        }
-        return memo[i][j];
-    }
     int longestCommonSubsequence(string text1, string text2) {
-        vector<vector<int>> memo(text1.size(), vector<int>(text2.size(), -1));
-        return dfs(0, 0, text1, text2, memo);
+        vector<vector<int>> dp(text1.size() + 1, vector<int>(text2.size() + 1, 0));
+        for(int i = 1; i <= text1.size(); ++i){
+            for(int j = 1; j <= text2.size(); ++j){
+                if(text1[i - 1] == text2[j - 1]){
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                }
+                else{
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        return dp[text1.size()][text2.size()];
     }
 };
