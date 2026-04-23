@@ -1,7 +1,7 @@
 class Solution {
 public:
-    int dp(int i, int j, string s, string p, vector<vector<int>>& memo){
-        if(i >= s.size() and j>=p.size()){
+    int dp(int i, int j, string& s, string& p, vector<vector<int>>& memo){
+        if(i >= s.size() and j >= p.size()){
             return 1;
         }
         if(j >= p.size()){
@@ -10,13 +10,13 @@ public:
         if(memo[i][j] != -1){
             return memo[i][j];
         }
-
         int temp = 0;
-        if(j + 1 < p.size() and p[j + 1] == '*'){
-            if(((i < s.size() and ((s[i] == p[j] or p[j] ==  '.') and dp(i + 1, j, s, p, memo))) or dp(i, j + 2, s, p, memo))){
+        bool valid = i < s.size() and (s[i] == p[j] or p[j] == '.');
+        if(j <= p.size() and p[j + 1] == '*'){
+            if((valid and dp(i + 1, j, s, p, memo)) or dp(i, j + 2, s, p, memo)){
                 temp = 1;
             }
-        }else if(i < s.size() and (s[i] == p[j] or p[j] ==  '.')){
+        } else if(valid){
             if(dp(i + 1, j + 1, s, p, memo)){
                 temp = 1;
             }
