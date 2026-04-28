@@ -3,24 +3,25 @@ public:
     bool checkValidString(string s) {
         int minopen = 0;
         int maxopen = 0;
-        for(auto cur : s){
+        for(char cur : s){
             if(cur == '('){
                 minopen++;
                 maxopen++;
             }
             if(cur == ')'){
-                minopen--;
-                maxopen--;
+                minopen -= 1;
+                maxopen -= 1;
             }
             if(cur == '*'){
-                minopen--;
-                maxopen++;
-            }
-            if(maxopen < 0){
-                return false;
+                minopen -= 1;
+                maxopen += 1;
+
             }
             if(minopen < 0){
                 minopen = 0;
+            }
+            if(maxopen < 0){
+                return false;
             }
         }
         return minopen == 0;
