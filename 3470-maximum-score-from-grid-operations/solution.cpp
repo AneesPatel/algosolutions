@@ -1,91 +1,52 @@
-template <typename T, typename U, typename V>
-struct segment_tree {
-  vector<T> tree;
-  U updater;
-  V combiner;
-  segment_tree(int n, T default_value, U updater, V combiner) : tree(2 * n, default_value), updater(updater), combiner(combiner) {}
-  inline void update(int i, T v) {
-    for (tree[i] = updater(tree[i += tree.size() >> 1], v); i > 1; i >>= 1)
-      tree[i >> 1] = combiner(tree[i], tree[i ^ 1]);
-  }
-  invoke_result_t<V, T, T> query(int l, int r, invoke_result_t<V, T, T> default_value) { // [l, r)
-    auto ans = default_value;
-    for (l += tree.size() >> 1, r += tree.size() >> 1; l < r; l >>= 1, r >>= 1) {
-      if (l & 1)
-        ans = combiner(ans, tree[l++]);
-      if (r & 1)
-        ans = combiner(ans, tree[--r]);
-    }
-    return ans;
-  }
-};
+using ll=long long;
+static ll colSum[100][101]={{0}}; // 1-indexed prefix col sums
+// (j%2, num of black items in curr col, cur col score exclusive/inclusive)
+static ll dp[2][101][2];
+static int n;
 
 class Solution {
 public:
-  long long maximumScore(vector<vector<int>> &g) {
-    // Setting up IOI input
+    static long long maximumScore(vector<vector<int>>& grid) {
+        n=grid.size();
+        if (n==1) return 0;
 
-    int n = g.size();
-    vector<int> x, y, w;
-    for (int i = 0; i < n; i++) {
-      for (int j = 0; j < n; j++) {
-        if (g[i][j]) {
-          x.push_back(j);
-          y.push_back(i);
-          w.push_back(g[i][j]);
+        // compute col prefix sums
+        for(int i=0; i<n; i++){
+            for(int j=0; j<n; j++){
+                colSum[j][i+1]=colSum[j][i]+grid[i][j];
+            }
         }
-      }
-    }
-    int m = x.size();
 
-    // IOI solution below
+        memset(dp[0], 0, sizeof(ll)*(n+1)*2);
 
-    vector l(n, vector<pair<int, int>>());
-    for (int i = 0; i < m; i++) {
-      l[x[i]].push_back({y[i], w[i]});
-    }
-    for (int i = 0; i < n; i++) {
-      ranges::sort(l[i]);
-    }
-    auto combine = [](long long x, long long y) {
-      return max(x, y);
-    };
-    segment_tree dp(n, 0LL, combine, combine), dp2(n, 0LL, combine, combine);
-    long long ans = 0, pcur = 0, cur = 0;
-    for (int i = 0; i < n; i++) {
-      vector<pair<int, long long>> apply, apply2;
-      {
-        long long sum = 0, mx = max(pcur, dp2.query(0, n, 0));
-        for (int pj = 0; auto [j, v] : l[i]) {
-          mx = max(mx, dp.query(pj, j, 0) - sum);
-          sum += v;
-          pj = j;
-          apply.push_back({j, sum + mx});
+        for(int j=1; j<n; j++){
+            bool cur=j&1, prv=!cur;
+            memset(dp[cur], 0, sizeof(ll)*(n+1)*2);
+
+            for(int b0=0; b0<=n; b0++){
+                ll p0=dp[prv][b0][0];
+                ll p1=dp[prv][b0][1];
+
+                for(int b1=0; b1<=n; b1++){
+                    bool isBigger=b1>b0;
+                    
+                    ll prvX=isBigger?(colSum[j-1][b1]-colSum[j-1][b0]):0;
+                    ll curX=!isBigger?(colSum[j][b0]-colSum[j][b1]):0;
+                    
+                    // State 0: score in cur col exclusive
+                    dp[cur][b1][0]=max(dp[cur][b1][0], max(prvX+p0, p1));
+                    
+                    // State 1: score in cur col inclusive
+                    dp[cur][b1][1]=max(dp[cur][b1][1], curX+max(p1, prvX+p0));
+                }
+            }
         }
-      }
-      if (i > 0) {
-        ranges::reverse(l[i]);
-        long long sum = 0, mx = pcur;
-        for (int pj = n - 1; auto [j, v] : l[i]) {
-          mx = max(mx, dp2.query(j + 1, pj + 1, 0) - sum);
-          sum += v;
-          pj = j;
-          apply2.push_back({j, sum + mx});
-        }
-      }
-      pcur = cur;
-      for (auto [j, res] : apply) {
-        dp.update(j, res);
-        cur = max(cur, res);
-        if (i < n - 1) {
-          ans = max(ans, res);
-        }
-      }
-      for (auto [j, res] : apply2) {
-        dp2.update(j, res);
-        ans = max(ans, res);
-      }
+
+        bool last=(n-1)&1;
+        ll ans=0;
+        for(int b=0; b<=n; b++) 
+            ans=max(ans, dp[last][b][1]);
+        
+        return ans;
     }
-    return ans;
-  }
 };
