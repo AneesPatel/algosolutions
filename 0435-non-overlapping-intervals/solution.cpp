@@ -4,10 +4,10 @@ public:
         if(intervals.size() <= 1){
             return 0;
         }
-        int res = 0;
         sort(intervals.begin(), intervals.end());
+        int res = 0;
         auto prev = intervals[0];
-        for (int i = 1; i < intervals.size(); ++i){
+        for(int i = 1; i < intervals.size(); ++i){
             auto cur = intervals[i];
             if(prev[1] > cur[0]){
                 res++;
@@ -16,7 +16,7 @@ public:
             else{
                 prev = cur;
             }
-            
+
         }
         return res;
     }
