@@ -3,12 +3,17 @@ name: Sync Leetcode
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */6 * * *"
+      - cron: "0 */6 * * *"
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Configure git identity
+        run: |
+          git config --global user.name "AneesPatel"
+          git config --global user.email "91919134+AneesPatel@users.noreply.github.com"
+
       - name: Sync
         uses: joshcai/leetcode-sync@v1.7
         with:
