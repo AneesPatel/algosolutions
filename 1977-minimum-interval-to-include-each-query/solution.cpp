@@ -1,38 +1,33 @@
 class Solution {
 public:
     vector<int> minInterval(vector<vector<int>>& intervals, vector<int>& queries) {
-        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> minq; // size, right value
-        int i = 0;
-        vector<pair<int, int>> newqueries;
-        for(int j = 0; j < queries.size(); ++j){
-            newqueries.push_back({queries[j], j});
+        vector<int> res(queries.size());
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> minq;
+        // size, rightindex
+        vector<pair<int, int>> nqueries;
+        for(int i = 0; i < queries.size(); ++i){
+            nqueries.push_back({queries[i], i});
         }
+        int i = 0;
+        sort(nqueries.begin(), nqueries.end());
         sort(intervals.begin(), intervals.end());
-        sort(newqueries.begin(), newqueries.end());
-        unordered_map<int, int> res; // index, val
-        for(auto cur : newqueries){
-            auto q = cur.first;
-            while(i < intervals.size() and intervals[i][0] <= q){
-                int l = intervals[i][0];
-                int r = intervals[i][1];
-                minq.push({r - l + 1, r});
-                ++i;
+        for(auto q : nqueries){
+            int val = q.first;
+            int index = q.second;
+            while(i < intervals.size() and val >= intervals[i][0]){
+                minq.push({intervals[i][1] - intervals[i][0] + 1, intervals[i][1]});
+                i++;
             }
-            while(!minq.empty() and minq.top().second < q){
+            while(!minq.empty() and minq.top().second < q.first){
                 minq.pop();
             }
-            if(minq.empty()){
-                res[cur.second] = -1;
+            if(!minq.empty()){
+                res[index] = minq.top().first;
             }
             else{
-                res[cur.second] = minq.top().first;
+                res[index] = -1;
             }
-            
         }
-        vector<int> res2(queries.size());
-        for(auto& [index, val] : res){
-            res2[index] = val;
-        }
-        return res2;
+        return res;
     }
 };
