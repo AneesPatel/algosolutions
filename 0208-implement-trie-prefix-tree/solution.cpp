@@ -1,17 +1,16 @@
 class TrieNode{
-public:
-    vector<TrieNode*> nei;
-    bool isWord;
-    TrieNode() {
-        nei = vector<TrieNode*>(26, nullptr); 
-        isWord = false;
-    }
-};
+    public:
+        vector<TrieNode*> nei;
+        bool isWord;
+        TrieNode(){
+            nei = vector<TrieNode*>(26, nullptr);
+            isWord = false;
+        }
 
+};
 class Trie {
-private:
-    TrieNode* root;
 public:
+    TrieNode* root;
     Trie() {
         root = new TrieNode();
     }
@@ -19,25 +18,23 @@ public:
     void insert(string word) {
         TrieNode* node = root;
         for(const char& cur : word){
-            if(node->nei[cur - 'a'] == nullptr){
-                node->nei[cur - 'a'] = new TrieNode();
+            int index = cur - 'a';
+            if(node->nei[index] == nullptr){
+                node->nei[index] = new TrieNode();
             }
-            node = node->nei[cur - 'a'];
+            node = node->nei[index];
         }
         node->isWord = true;
-
     }
     
     bool search(string word) {
         TrieNode* node = root;
         for(const char& cur : word){
-            auto convert = cur - 'a';
-            if(node->nei[convert] != nullptr){
-                node = node->nei[convert];
-            }
-            else{
+            int index = cur - 'a'; 
+            if(node->nei[index] == nullptr){
                 return false;
             }
+            node = node->nei[index];
         }
         return node->isWord;
     }
@@ -45,13 +42,11 @@ public:
     bool startsWith(string prefix) {
         TrieNode* node = root;
         for(const char& cur : prefix){
-            auto convert = cur - 'a';
-            if(node->nei[convert] != nullptr){
-                node = node->nei[convert];
-            }
-            else{
+            int index = cur - 'a'; 
+            if(node->nei[index] == nullptr){
                 return false;
             }
+            node = node->nei[index];
         }
         return true;
     }
