@@ -1,15 +1,15 @@
 class Solution {
 public:
-    vector<int> countBits(int n){
-        vector<int> dp(n + 1, 0);
-        int offset = 1;
+    vector<int> countBits(int n) {
+        vector<int> res(n + 1, 0);
+        int MSB = 1;
         for(int i = 1; i <= n; ++i){
-            if(offset * 2 == i){
-                offset = i;
+            if(MSB * 2 == i){
+                MSB = i;
             }
-            dp[i] = 1 + dp[i - offset];
+            res[i] = 1 + res[i - MSB];
             
         }
-        return dp;
+        return res;
     }
 };
