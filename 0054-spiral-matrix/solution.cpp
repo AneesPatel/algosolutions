@@ -2,32 +2,30 @@ class Solution {
 public:
     int ROW;
     int COL;
-    int size;
+    int SIZE;
     vector<vector<int>> directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-    void dfs(int r, int c, int dir, vector<int>& res, vector<vector<int>>& matrix){
-        if(res.size() == size){
+    void dfs(int r, int c, int curdire, vector<int>& res, vector<vector<int>>& matrix){
+        if(res.size() == SIZE){
             return;
         }
         res.push_back(matrix[r][c]);
-        matrix[r][c] = INT_MAX;
-
-        int nr = r + directions[dir][0];
-        int nc = c + directions[dir][1];
-        
-        if(nr >= ROW or nc >= COL or nr < 0 or nc < 0 or matrix[nr][nc] == INT_MAX){
-            dir = (1 + dir) % 4;
-            nr = r + directions[dir][0];
-            nc = c + directions[dir][1];
+        matrix[r][c] = INT_MIN;
+        int nr = r + directions[curdire][0];
+        int nc = c + directions[curdire][1];
+        if(nr < 0 or nc < 0 or nr >= ROW or nc >= COL or matrix[nr][nc] == INT_MIN){
+            curdire = (1 + curdire) % 4;
+            nr = r + directions[curdire][0];
+            nc = c + directions[curdire][1]; 
         }
-        dfs(nr, nc, dir, res, matrix);
-        
+        dfs(nr, nc, curdire, res, matrix);
 
     }
+
     vector<int> spiralOrder(vector<vector<int>>& matrix) {
+        vector<int> res;
         ROW = matrix.size();
         COL = matrix[0].size();
-        size = ROW * COL;
-        vector<int> res;
+        SIZE = ROW * COL;
         dfs(0, 0, 0, res, matrix);
         return res;
     }
