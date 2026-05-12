@@ -1,39 +1,27 @@
 class Solution {
 public:
-    int ROW;
-    int COL;
-    vector<vector<int>> replace;
-    void rdfs(int r, int c, vector<vector<int>>& matrix){
-        if(r >= ROW){
-            return;
-        }
-        if(matrix[r][c] != 0){
-            replace.push_back({r, c});
-        }
-        rdfs(r + 1, c, matrix);
-    }
-    void cdfs(int r, int c, vector<vector<int>>& matrix){
-        if(c >= COL){
-            return;
-        }
-        if(matrix[r][c] != 0){
-            replace.push_back({r, c});
-        }
-        cdfs(r, c + 1, matrix);
-    }
     void setZeroes(vector<vector<int>>& matrix) {
-        ROW = matrix.size();
-        COL = matrix[0].size();
-        for(int r = 0; r < ROW; ++r){
-            for(int c = 0; c < COL; ++c){
-                if(matrix[r][c] == 0){
-                    rdfs(0, c, matrix);
-                    cdfs(r, 0, matrix);
+        unordered_set<int> rows;
+        unordered_set<int> cols;
+        int ROW = matrix.size();
+        int COL = matrix[0].size();
+        for(int i = 0; i < ROW; ++i){
+            for(int j = 0; j < COL; ++j){
+                if(matrix[i][j] == 0){
+                    rows.insert(i);
+                    cols.insert(j);
                 }
             }
         }
-        for(const auto& cur : replace){
-            matrix[cur[0]][cur[1]] = 0;
+        for(auto r : rows){
+            for (int c = 0; c < COL; ++c){
+                matrix[r][c] = 0;
+            }
+        }
+        for(auto c : cols){
+            for (int r = 0; r < ROW; ++r){
+                matrix[r][c] = 0;
+            }
         }
     }
 };
