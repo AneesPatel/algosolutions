@@ -17,7 +17,7 @@ public:
             power = power >> 1;
         }
         if(n < 0){
-            return 1/res;
+            return 1 / res;
         }
         return res;
     }
