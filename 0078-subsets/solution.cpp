@@ -1,22 +1,21 @@
 class Solution {
 public:
-    void backtrack(int index, vector<vector<int>>& res, vector<int>& path, vector<int>& nums){
-        
-        res.push_back(path);
-            
-        
-        for(int i = index; i < nums.size(); ++i){
-            path.push_back(nums[i]);
-            backtrack(i + 1, res, path, nums);
-            path.pop_back();
-
+    void dfs(int i, vector<int>& path, vector<vector<int>>& res, vector<int>& nums){ 
+        if(i >= nums.size()){
+            res.push_back(path);
+            return;
         }
-
+        path.push_back(nums[i]);
+        dfs(i + 1, path, res, nums);
+        path.pop_back();
+        dfs(i + 1, path, res, nums);
+        
     }
     vector<vector<int>> subsets(vector<int>& nums) {
         vector<vector<int>> res;
         vector<int> path;
-        backtrack(0, res, path, nums);
+
+        dfs(0, path, res, nums);
         return res;
     }
 };
