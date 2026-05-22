@@ -1,19 +1,19 @@
 class Solution {
 public:
-    int id = 0;
-    string URL = "http://tinyurl.com/";
-    unordered_map<string, string> code; //long url to short url conversion
+    int ID = 0;
     // Encodes a URL to a shortened URL.
+    string URL = "http://tinyurl.com/";
+    unordered_map<string, string> map; //short to long;
     string encode(string longUrl) {
-        string convert = URL + to_string(id);
-        code[convert] = longUrl;
-        id++;
-        return convert;
+        string temp = URL + to_string(ID);
+        ID++;
+        map[temp] = longUrl;
+        return temp;
     }
 
     // Decodes a shortened URL to its original URL.
     string decode(string shortUrl) {
-        return code[shortUrl];
+        return map[shortUrl];
     }
 };
 
